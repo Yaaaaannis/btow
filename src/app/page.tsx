@@ -53,29 +53,19 @@ export default function Home() {
         <Canvas
           ref={canvasRef}
           className="w-full h-full"
-          camera={{ position: [0, 2, 10], fov: 45 }}
           gl={{ 
             antialias: true,
             toneMapping: 2, // ACESFilmicToneMapping
             toneMappingExposure: 1.2
           }}
         >
-          <OrbitControls 
-            enablePan={false}
-            minPolarAngle={Math.PI / 4}
-            maxPolarAngle={Math.PI / 2}
-            minDistance={5}
-            maxDistance={15}
-          />
+        
           <Environment 
             files="/textures/modern_meuesum.hdr"
             background
-            blur={0.5}
+            blur={0.1}
           />
-          <ambientLight intensity={0.3} />
-          <directionalLight position={[10, 10,-5]} intensity={0.5} />
-          <directionalLight position={[-10, 10, -5]} intensity={0.3} />
-          <House scale={0.5} position={[0, -3, 0]} />
+          <House scale={0.5} position={[0, 0, 0]} />
         </Canvas>
       </div>
 
