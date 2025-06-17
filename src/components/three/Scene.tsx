@@ -7,7 +7,7 @@ import { CameraController } from "./CameraController";
 import { LightWithControls } from "./LightWithControls";
 
 interface SceneProps {
-  onCameraChange: (camera: 'cam006' | 'cam007' | 'cam008') => void;
+  onCameraChange: (camera: 'cam006' | 'cam007' | 'cam008' | 'cam009') => void;
   onActionsLoad: (actions: any) => void;
 }
 
