@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { useThree } from '@react-three/fiber';
+import * as THREE from 'three';
 
 export const LightWithControls = memo(() => {
   const { scene } = useThree();
@@ -9,7 +10,7 @@ export const LightWithControls = memo(() => {
     color: "#fff",
     intensity: 1,
     castShadow: true,
-    "shadow-mapSize": [4096, 4096],
+    "shadow-mapSize": [4096, 4096] as [number, number],
     "shadow-bias": -0.0001,
     "shadow-normalBias": 0.02,
     "shadow-radius": 5,
@@ -19,7 +20,7 @@ export const LightWithControls = memo(() => {
     "shadow-camera-right": 10,
     "shadow-camera-top": 10,
     "shadow-camera-bottom": -10,
-    position: [1, 3.8, -2]
+    position: [1, 3.8, -2] as [number, number, number]
   };
 
   return (
