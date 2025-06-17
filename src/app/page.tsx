@@ -21,6 +21,7 @@ export default function Home() {
   const [currentCamera, setCurrentCamera] = useState('cam006');
   const [isDoorOpened, setIsDoorOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSceneLoaded, setIsSceneLoaded] = useState(false);
   const revealProgress = useMotionValue(0);
   const [loaderTexture, setLoaderTexture] = useState<THREE.Texture | null>(null);
 
@@ -42,7 +43,6 @@ export default function Home() {
 
   const handleTextureReady = useCallback((texture: THREE.Texture) => {
     setLoaderTexture(texture);
-    // Start the reveal animation when the texture is ready
     animate(revealProgress, 1, {
       duration: 2,
       ease: 'easeInOut'
@@ -53,7 +53,6 @@ export default function Home() {
     if (typeof window === "undefined") return;
 
     const ctx = gsap.context(() => {
-      // Animation for the title overlay
       gsap.from(".title-overlay", {
         y: 100,
         opacity: 0,
@@ -71,10 +70,11 @@ export default function Home() {
       {isLoading && (
         <Loader 
           onLoadingComplete={() => {
-            // Attendre 3 secondes après la fin de l'animation de transition
-            setTimeout(() => {
-              setIsLoading(false);
-            }, 3000);
+            if (isSceneLoaded) {
+              setTimeout(() => {
+                setIsLoading(false);
+              }, 100);
+            }
           }} 
         />
       )}
@@ -160,18 +160,21 @@ export default function Home() {
           </div>
         )}
 
-        <div className="fixed top-0 left-0 w-full h-full">
-          <Scene 
-            onCameraChange={setCurrentCamera}
-            onActionsLoad={(actions) => {
-              if (actions && actions['Main_Door_Open']) {
-                const action = actions['Main_Door_Open'];
-                action.setLoop(1, 1);
-                action.clampWhenFinished = true;
-              }
-              setHouseActions(actions);
-            }}
-          />
+        <div className="fixed top-0 left-0 w-full h-full" style={{ visibility: isLoading ? 'hidden' : 'visible' }}>
+          <Suspense fallback={null}>
+            <Scene 
+              onCameraChange={setCurrentCamera}
+              onActionsLoad={(actions) => {
+                if (actions && actions['Main_Door_Open']) {
+                  const action = actions['Main_Door_Open'];
+                  action.setLoop(1, 1);
+                  action.clampWhenFinished = true;
+                }
+                setHouseActions(actions);
+                setIsSceneLoaded(true);
+              }}
+            />
+          </Suspense>
         </div>
 
         <Canvas>
@@ -181,7 +184,7 @@ export default function Home() {
               <RevealImage
                 texture={loaderTexture}
                 revealProgress={revealProgress}
-                isFullScreen={true}
+                isClicked={true}
               />
             )}
           </Suspense>

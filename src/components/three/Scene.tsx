@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
-import { Environment, Preload, AdaptiveDpr, AdaptiveEvents } from "@react-three/drei";
+import { Environment, Preload, AdaptiveDpr, AdaptiveEvents, useProgress } from "@react-three/drei";
 import * as THREE from 'three';
-import { Suspense, memo } from 'react';
+import { Suspense, memo, useEffect } from 'react';
 import { House2 } from "./House2";
 import { CameraController } from "./CameraController";
 import { LightWithControls } from "./LightWithControls";
@@ -10,6 +10,26 @@ interface SceneProps {
   onCameraChange: (camera: 'cam006' | 'cam007' | 'cam008' | 'cam009') => void;
   onActionsLoad: (actions: any) => void;
 }
+
+// Composant pour gérer le préchargement
+const LoadingManager = ({ onActionsLoad }: { onActionsLoad: (actions: any) => void }) => {
+  const { progress, loaded, total } = useProgress();
+  
+  useEffect(() => {
+    if (loaded === total && total > 0) {
+      // Toutes les ressources sont chargées
+      console.log('All resources loaded:', loaded, 'of', total);
+    }
+  }, [loaded, total]);
+
+  return (
+    <House2
+      scale={0.5}
+      position={[0, 0, 0]}
+      onLoad={onActionsLoad}
+    />
+  );
+};
 
 export const Scene = memo(({ onCameraChange, onActionsLoad }: SceneProps) => {
   return (
@@ -40,11 +60,7 @@ export const Scene = memo(({ onCameraChange, onActionsLoad }: SceneProps) => {
         />
         <ambientLight intensity={0.7} color="#ffffff" />
         <LightWithControls />
-        <House2
-          scale={0.5}
-          position={[0, 0, 0]}
-          onLoad={onActionsLoad}
-        />
+        <LoadingManager onActionsLoad={onActionsLoad} />
         <Preload all /> {/* Précharge toutes les textures */}
       </Suspense>
       <AdaptiveDpr pixelated /> {/* Ajuste dynamiquement la résolution */}

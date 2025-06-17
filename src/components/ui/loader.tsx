@@ -13,8 +13,8 @@ interface LoaderProps {
 export const Loader = ({ onLoadingComplete }: LoaderProps) => {
   const [progress, setProgress] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
-  const revealProgress = useMotionValue(0);
+  const [isClicked, setIsClicked] = useState(false);
+  const revealProgress = useMotionValue(1); // Start with 1 (fully visible)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -32,7 +32,13 @@ export const Loader = ({ onLoadingComplete }: LoaderProps) => {
   }, []);
 
   const handleClick = () => {
-    if (isLoaded && onLoadingComplete) {
+    if (isLoaded && !isClicked) {
+      setIsClicked(true);
+    }
+  };
+
+  const handleRevealComplete = () => {
+    if (onLoadingComplete) {
       onLoadingComplete();
     }
   };
@@ -47,7 +53,7 @@ export const Loader = ({ onLoadingComplete }: LoaderProps) => {
         }}
       >
         <div className="relative w-full h-full flex flex-col items-center justify-center">
-          {/* Logo et barre de loading */}
+          {/* Logo and loading bar */}
           <div className="absolute left-12 bottom-12 flex flex-col gap-4">
             <div className="flex items-center">
               <span className="text-white text-[18px] font-bold tracking-wider">THE</span>
@@ -61,19 +67,23 @@ export const Loader = ({ onLoadingComplete }: LoaderProps) => {
             </div>
           </div>
 
-          {/* Pourcentage */}
+          {/* Percentage */}
           <div className="absolute bottom-12 right-12">
             <span className="text-white text-[64px] font-bold">{progress}%</span>
           </div>
 
-          {/* Bouton avec effet de portail */}
+          {/* Image with reveal effect */}
           <div 
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[300px]"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
+            className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[300px] cursor-pointer transition-transform duration-500 ${isClicked ? 'scale-95 pointer-events-none' : 'scale-100'}`}
             onClick={handleClick}
           >
             <Canvas
+              camera={{
+                fov: 45,
+                near: 0.1,
+                far: 1000,
+                position: [0, 0, 4]
+              }}
               gl={{
                 antialias: true,
                 alpha: true,
@@ -82,9 +92,10 @@ export const Loader = ({ onLoadingComplete }: LoaderProps) => {
             >
               <Suspense fallback={null}>
                 <RevealImage
-                  texture="/button.svg"
+                  texture="/button.png"
                   revealProgress={revealProgress}
-                  isFullScreen={isHovering}
+                  isClicked={isClicked}
+                  onRevealComplete={handleRevealComplete}
                 />
               </Suspense>
             </Canvas>
