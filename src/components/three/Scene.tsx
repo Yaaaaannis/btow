@@ -1,17 +1,19 @@
 import { Canvas } from "@react-three/fiber";
-import { Environment, Preload, AdaptiveDpr, AdaptiveEvents, useProgress } from "@react-three/drei";
+import { Environment, Preload, AdaptiveDpr, AdaptiveEvents, useProgress, Float } from "@react-three/drei";
 import * as THREE from 'three';
 import { Suspense, memo, useEffect } from 'react';
 import { House2 } from "./House2";
 import { CameraController } from "./CameraController";
 import { LightWithControls } from "./LightWithControls";
+import { Book } from "../book/Book";
+import { Provider } from "jotai";
 
 interface SceneProps {
   onCameraChange: (camera: 'cam006' | 'cam007' | 'cam008' | 'cam009') => void;
   onActionsLoad: (actions: any) => void;
 }
 
-// Composant pour gérer le préchargement
+// Composant pour gérer le préchargement et le positionnement du livre
 const LoadingManager = ({ onActionsLoad }: { onActionsLoad: (actions: any) => void }) => {
   const { progress, loaded, total } = useProgress();
   
@@ -23,11 +25,27 @@ const LoadingManager = ({ onActionsLoad }: { onActionsLoad: (actions: any) => vo
   }, [loaded, total]);
 
   return (
-    <House2
-      scale={0.5}
-      position={[0, 0, 0]}
-      onLoad={onActionsLoad}
-    />
+    <>
+      <House2
+        scale={0.5}
+        position={[0, 0, 0]}
+        onLoad={onActionsLoad}
+      />
+      
+      {/* Position the book in the scene */}
+      <group 
+        position={[0.3, 1.3, -2.5]} 
+        scale={0.3}
+      >
+        <Float
+          speed={2} // Vitesse de flottement très lente
+          rotationIntensity={0.3} // Très légère rotation
+          floatIntensity={0.3} // Très léger mouvement vertical
+        >
+          <Book />
+        </Float>
+      </group>
+    </>
   );
 };
 
@@ -51,20 +69,22 @@ export const Scene = memo(({ onCameraChange, onActionsLoad }: SceneProps) => {
       }}
       performance={{ min: 0.5 }} // Permet de réduire la qualité si nécessaire
     >
-      <Suspense fallback={null}>
-        <CameraController onCameraChange={onCameraChange} />
-        <Environment
-          files="/textures/modern_meuesum.hdr"
-          background
-          blur={0.05}
-        />
-        <ambientLight intensity={0.7} color="#ffffff" />
-        <LightWithControls />
-        <LoadingManager onActionsLoad={onActionsLoad} />
-        <Preload all /> {/* Précharge toutes les textures */}
-      </Suspense>
-      <AdaptiveDpr pixelated /> {/* Ajuste dynamiquement la résolution */}
-      <AdaptiveEvents /> {/* Optimise la gestion des événements */}
+      <Provider>
+        <Suspense fallback={null}>
+          <CameraController onCameraChange={onCameraChange} />
+          <Environment
+            files="/textures/modern_meuesum.hdr"
+            background
+            blur={0.05}
+          />
+          <ambientLight intensity={0.7} color="#ffffff" />
+          <LightWithControls />
+          <LoadingManager onActionsLoad={onActionsLoad} />
+          <Preload all /> {/* Précharge toutes les textures */}
+        </Suspense>
+        <AdaptiveDpr pixelated /> {/* Ajuste dynamiquement la résolution */}
+        <AdaptiveEvents /> {/* Optimise la gestion des événements */}
+      </Provider>
     </Canvas>
   );
 })
