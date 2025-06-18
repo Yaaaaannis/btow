@@ -240,7 +240,7 @@ export default function Home() {
         )}
 
         {currentCamera === 'cam009' && (
-          <div ref={cam009TextRef} className="fixed bottom-8 left-0 z-40 p-16 pointer-events-none select-none">
+          <div ref={cam009TextRef} className="fixed bottom-8 left-0 z-40 p-6 pointer-events-none select-none">
             <div className="space-y-6">
               <h1 className="text-[84px] font-bold leading-[84%] tracking-tight text-white" style={{ fontFamily: '"Montserrat", sans-serif' }}>
                 WELCOME<br />
