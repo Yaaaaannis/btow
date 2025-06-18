@@ -20,7 +20,13 @@ export const LoaderCapture = ({ onTextureReady }: { onTextureReady: (texture: TH
 
     // Render the Loader into the div
     const root = createRoot(div);
-    root.render(<Loader onLoadingComplete={() => {}} />);
+    root.render(
+      <Loader 
+        onLoadingComplete={() => {}} 
+        progress={100} 
+        isSceneLoaded={true}
+      />
+    );
 
     // Wait a bit for the Loader to be rendered
     setTimeout(() => {
