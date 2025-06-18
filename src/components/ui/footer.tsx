@@ -95,14 +95,14 @@ export const Footer = ({ isVisible }: FooterProps) => {
   return (
     <div 
       ref={footerRef}
-      className="fixed inset-0 z-50 pointer-events-none select-none"
+      className={`fixed inset-0 pointer-events-none select-none ${isVisible ? 'z-50' : 'z-[-1]'}`}
       style={{ opacity: 0 }}
     >
       {/* Fond pour masquer la scène */}
       <div className="absolute inset-0 bg-black" />
       
       {/* Navigation Buttons */}
-      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-50 flex gap-4">
+      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-40 flex gap-4">
         <button
           onClick={() => switchToSection('events')}
           className={`px-6 py-3 font-montserrat font-bold text-sm uppercase transition-all duration-300 pointer-events-auto ${

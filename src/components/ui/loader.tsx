@@ -53,7 +53,7 @@ export const Loader = ({ onLoadingComplete, progress, isSceneLoaded }: LoaderPro
   return (
     <div 
       ref={loaderRef}
-      className="fixed inset-0 z-50"
+      className="fixed inset-0 z-[60]"
     >
       <div 
         className="absolute inset-0"

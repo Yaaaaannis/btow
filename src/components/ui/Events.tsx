@@ -152,6 +152,74 @@ export const Events = () => {
           position: relative;
           z-index: 2;
         }
+        
+        .effect-5 {
+          transition: all 0.2s linear 0s;
+          position: relative;
+          overflow: visible;
+        }
+        
+        .effect-5::after {
+          content: "→";
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: absolute;
+          top: 0;
+          right: 0px;
+          height: 100%;
+          width: 30px;
+          background-color: rgba(0, 0, 0, 0.3);
+          border-radius: 50% 0 0 50%;
+          transform: scale(0,1);
+          transform-origin: right center;
+          transition: all 0.2s linear 0s;
+          color: black;
+          font-weight: bold;
+          z-index: 3;
+        }
+        
+        .effect-5:hover {
+          text-indent: -30px;
+        }
+        
+        .effect-5:hover::after {
+          transform: scale(1,1);
+        }
+        
+        .effect-5-yellow {
+          transition: all 0.2s linear 0s;
+          position: relative;
+          overflow: visible;
+        }
+        
+        .effect-5-yellow::after {
+          content: "←";
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: absolute;
+          top: 0;
+          left: 0px;
+          height: 100%;
+          width: 30px;
+          background-color: rgba(0, 0, 0, 0.3);
+          border-radius: 0 50% 50% 0;
+          transform: scale(0,1);
+          transform-origin: left center;
+          transition: all 0.2s linear 0s;
+          color: black;
+          font-weight: bold;
+          z-index: 3;
+        }
+        
+        .effect-5-yellow:hover {
+          text-indent: 30px;
+        }
+        
+        .effect-5-yellow:hover::after {
+          transform: scale(1,1);
+        }
       `}</style>
 
       {/* Header */}
@@ -306,13 +374,13 @@ export const Events = () => {
       <div className="flex flex-col justify-start gap-4">
           <button
             onClick={handleNext}
-            className="w-auto bg-white text-black py-4 px-25 font-extrabold font-montserrat hover:bg-gray-100 transition-colors pointer-events-auto text-[24px] shine-effect"
+            className="w-auto bg-white text-black py-4 px-25 font-extrabold font-montserrat hover:bg-gray-100 transition-colors pointer-events-auto text-[24px]  effect-5"
           >
             <span>NEXT</span>
           </button>
           <button
             onClick={handleBack}
-            className="w-auto bg-[#FBD37F] text-black py-4 px-8 font-extrabold font-montserrat hover:bg-yellow-400 transition-colors pointer-events-auto text-[24px] shine-effect-yellow"
+            className="w-auto bg-[#FBD37F] text-black py-4 px-8 font-extrabold font-montserrat hover:bg-yellow-400 transition-colors pointer-events-auto text-[24px]  effect-5-yellow"
           >
             <span>BACK</span>
           </button>
