@@ -6,7 +6,9 @@ import { House2 } from "./House2";
 import { CameraController } from "./CameraController";
 import { LightWithControls } from "./LightWithControls";
 import { Book } from "../book/Book";
+import { BookEffects } from "./BookEffects";
 import { Provider } from "jotai";
+
 
 interface SceneProps {
   onCameraChange: (camera: 'cam006' | 'cam007' | 'cam008' | 'cam009') => void;
@@ -43,6 +45,7 @@ const LoadingManager = ({ onActionsLoad }: { onActionsLoad: (actions: any) => vo
           floatIntensity={0.3} // Très léger mouvement vertical
         >
           <Book />
+          <BookEffects />
         </Float>
       </group>
     </>
