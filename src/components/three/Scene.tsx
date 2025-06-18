@@ -13,6 +13,7 @@ import { Provider } from "jotai";
 interface SceneProps {
   onCameraChange: (camera: 'cam006' | 'cam007' | 'cam008' | 'cam009') => void;
   onActionsLoad: (actions: any) => void;
+  onFinalPosition?: (isAtFinal: boolean) => void;
 }
 
 // Composant pour gérer le préchargement et le positionnement du livre
@@ -52,7 +53,7 @@ const LoadingManager = ({ onActionsLoad }: { onActionsLoad: (actions: any) => vo
   );
 };
 
-export const Scene = memo(({ onCameraChange, onActionsLoad }: SceneProps) => {
+export const Scene = memo(({ onCameraChange, onActionsLoad, onFinalPosition }: SceneProps) => {
   return (
     <Canvas
       shadows
@@ -74,7 +75,7 @@ export const Scene = memo(({ onCameraChange, onActionsLoad }: SceneProps) => {
     >
       <Provider>
         <Suspense fallback={null}>
-          <CameraController onCameraChange={onCameraChange} />
+          <CameraController onCameraChange={onCameraChange} onFinalPosition={onFinalPosition} />
           <Environment
             files="/textures/modern_meuesum.hdr"
             background

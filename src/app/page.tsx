@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { Loader } from "@/components/ui/loader";
+import { Footer } from "@/components/ui/footer";
 import { Canvas } from '@react-three/fiber';
 import { animate, useMotionValue } from 'framer-motion';
 import { Suspense } from 'react';
@@ -25,6 +26,8 @@ export default function Home() {
   const [isDoorOpened, setIsDoorOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSceneLoaded, setIsSceneLoaded] = useState(false);
+  const [showFooter, setShowFooter] = useState(false);
+  const [isAtFinalPosition, setIsAtFinalPosition] = useState(false);
   const revealProgress = useMotionValue(0);
   const [loaderTexture, setLoaderTexture] = useState<THREE.Texture | null>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -136,7 +139,7 @@ export default function Home() {
       });
     }
 
-    if (currentCamera === 'cam009') {
+    if (currentCamera === 'cam009' && !isAtFinalPosition) {
       gsap.fromTo(cam009TextRef.current,
         { opacity: 0, y: 50 },
         { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
@@ -149,7 +152,7 @@ export default function Home() {
         ease: "power3.in"
       });
     }
-  }, [currentCamera]);
+  }, [currentCamera, isAtFinalPosition]);
 
   return (
     <>
@@ -162,12 +165,12 @@ export default function Home() {
       )}
       <div className="relative w-full overflow-x-hidden bg-background text-foreground">
         {/* Div pour créer la hauteur de scroll */}
-        <div style={{ height: "2100vh" }} />
+        <div style={{ height: "2600vh" }} />
         
         <div ref={titleOverlayRef} className="title-overlay fixed bottom-0 left-0 z-40 p-6 pointer-events-none select-none">
           <div className="relative">
             <span
-              className="block text-[32px] sm:text-[48px] md:text-[64px] lg:text-[96px] text-white mb-[-0.1em] ml-[1em] sm:ml-[1.5em] md:ml-[2em] lg:ml-[2em]"
+              className="block text-[32px] sm:text-[48px] md:text-[64px] lg:text-[96px] text-white mb-[-0.1em] ml-[1em] sm:ml-[1.5em] md:ml-[2em] lg:ml-[1.5em]"
               style={{
                 fontFamily: '"Playfair Display", serif',
                 fontStyle: "italic",
@@ -196,7 +199,7 @@ export default function Home() {
         {currentCamera === 'cam008' && (
           <div ref={cam008TextRef} className="fixed bottom-8 left-0 z-40 p-6 pointer-events-none select-none">
             <div className="space-y-6">
-              <h1 className="text-[64px] font-bold leading-[84%] tracking-tight text-white" style={{ fontFamily: '"Montserrat", sans-serif' }}>
+              <h1 className="text-[64px] font-bold leading-[84%] tracking-tight text-white font-montserrat uppercase">
                 DISCOVER<br />
                 CUBISM LIKE<br />
                 NEVER BEFORE
@@ -228,7 +231,7 @@ export default function Home() {
 
             <div ref={cam007TextRef} className="fixed bottom-8 left-0 z-40 p-6 pointer-events-none select-none">
               <div className="space-y-4">
-                <h1 className="text-[83px] font-bold leading-[84%] text-white" style={{ fontFamily: '"Montserrat", sans-serif' }}>
+                <h1 className="text-[83px] font-bold leading-[84%] text-white font-montserrat uppercase">
                   ART IN MOTION
                 </h1>
                 <p className="text-[16px] tracking-wider text-white/80 leading-relaxed uppercase max-w-lg" style={{ fontFamily: '"Inter", sans-serif' }}>
@@ -241,26 +244,28 @@ export default function Home() {
 
         {currentCamera === 'cam009' && (
           <div ref={cam009TextRef} className="fixed bottom-8 left-0 z-40 p-6 pointer-events-none select-none">
-            <div className="space-y-6">
-              <h1 className="text-[84px] font-bold leading-[84%] tracking-tight text-white" style={{ fontFamily: '"Montserrat", sans-serif' }}>
-                WELCOME<br />
-                INSIDE
+            <div className="space-y-2">
+              <h1 className="text-[64px] font-bold leading-[84%] tracking-tight text-white uppercase font-montserrat" >
+               explore the art
               </h1>
-              <p className="text-sm uppercase tracking-wider text-[#737373] leading-relaxed max-w-lg" style={{ fontFamily: '"Inter", sans-serif' }}>
-                <span className="text-white font-medium">EXPLORE</span> THE INTERIOR OF OUR DIGITAL MUSEUM, WHERE <span className="text-white font-medium">CUBIST MASTERPIECES</span> COME TO LIFE IN AN IMMERSIVE ENVIRONMENT.
+              <p className="text-[16px] uppercase tracking-wider text-[#737373] leading-relaxed max-w-lg" style={{ fontFamily: '"Inter", sans-serif' }}>
+                <span className="text-white font-medium">browse the book and explore art.</span>
               </p>
             </div>
           </div>
         )}
 
         <div 
-          className="fixed top-0 left-0 w-full h-full opacity-0" 
+          className="fixed top-0 left-0 w-full h-full" 
           ref={sceneRef}
-          style={{ visibility: isLoading ? 'hidden' : 'visible' }}
         >
           <Suspense fallback={null}>
             <Scene 
               onCameraChange={setCurrentCamera}
+              onFinalPosition={(isAtFinal) => {
+                setShowFooter(isAtFinal);
+                setIsAtFinalPosition(isAtFinal);
+              }}
               onActionsLoad={(actions) => {
                 if (actions && actions['Main_Door_Open']) {
                   const action = actions['Main_Door_Open'];
@@ -269,14 +274,6 @@ export default function Home() {
                 }
                 setHouseActions(actions);
                 setIsSceneLoaded(true);
-                
-                // Fade in the scene
-                gsap.to(sceneRef.current, {
-                  opacity: 1,
-                  duration: 1.5,
-                  delay: 0.5,
-                  ease: "power3.inOut"
-                });
               }}
             />
           </Suspense>
@@ -294,6 +291,8 @@ export default function Home() {
             )}
           </Suspense>
         </Canvas>
+
+        <Footer isVisible={showFooter} />
       </div>
     </>
   );

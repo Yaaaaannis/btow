@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, IBM_Plex_Mono, Playfair_Display } from "next/font/google";
+import { Geist, Geist_Mono, Inter, IBM_Plex_Mono, Playfair_Display, Montserrat } from "next/font/google";
 import "@/styles/globals.css";
 import { siteConfig } from "@/config/site.config";
 import { cn } from "@/lib/utils";
@@ -30,6 +30,12 @@ const fontPlayfair = Playfair_Display({
   variable: "--font-playfair-display",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+});
+
+const fontMontserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -88,6 +94,7 @@ export default function RootLayout({
           fontMono.variable,
           fontPlex.variable,
           fontPlayfair.variable,
+          fontMontserrat.variable,
         )}
       >
         <RootProviders>

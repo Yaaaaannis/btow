@@ -67,6 +67,7 @@
   --font-heading: var(--font-inter);
   --font-plex: var(--font-ibm-plex-mono);
   --font-playfair: var(--font-playfair-display);
+  --font-montserrat: var(--font-montserrat);
 }
 
 :root {
