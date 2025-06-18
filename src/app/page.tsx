@@ -167,7 +167,7 @@ export default function Home() {
         <div ref={titleOverlayRef} className="title-overlay fixed bottom-0 left-0 z-40 p-6 pointer-events-none select-none">
           <div className="relative">
             <span
-              className="block text-[32px] sm:text-[48px] md:text-[64px] lg:text-[96px] text-white mb-[-0.1em] ml-[1em] sm:ml-[1.5em] md:ml-[2em] lg:ml-[2.6em]"
+              className="block text-[32px] sm:text-[48px] md:text-[64px] lg:text-[96px] text-white mb-[-0.1em] ml-[1em] sm:ml-[1.5em] md:ml-[2em] lg:ml-[2em]"
               style={{
                 fontFamily: '"Playfair Display", serif',
                 fontStyle: "italic",
