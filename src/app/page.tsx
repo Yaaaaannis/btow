@@ -97,62 +97,66 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // Animation des textes en fonction de la caméra
+    // Animation des textes en fonction de la caméra avec transitions plus fluides
+    
+    // Tuer toutes les animations en cours pour éviter les superpositions
+    gsap.killTweensOf([titleOverlayRef.current, cam008TextRef.current, cam007TextRef.current, cam009TextRef.current]);
+    
     if (currentCamera === 'cam006') {
       gsap.to(titleOverlayRef.current, {
         opacity: 1,
         y: 0,
-        duration: 1,
-        ease: "power3.out"
+        duration: 0.4,
+        ease: "power2.out"
       });
     } else {
       gsap.to(titleOverlayRef.current, {
         opacity: 0,
-        y: 50,
-        duration: 0.5,
-        ease: "power3.in"
+        y: 30,
+        duration: 0.2,
+        ease: "power2.in"
       });
     }
 
     if (currentCamera === 'cam008') {
       gsap.fromTo(cam008TextRef.current,
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
       );
     } else {
       gsap.to(cam008TextRef.current, {
         opacity: 0,
-        y: 50,
-        duration: 0.5,
-        ease: "power3.in"
+        y: 30,
+        duration: 0.2,
+        ease: "power2.in"
       });
     }
 
     if (currentCamera === 'cam007') {
       gsap.fromTo(cam007TextRef.current,
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
       );
     } else {
       gsap.to(cam007TextRef.current, {
         opacity: 0,
-        y: 50,
-        duration: 0.5,
-        ease: "power3.in"
+        y: 30,
+        duration: 0.2,
+        ease: "power2.in"
       });
     }
 
     if (currentCamera === 'cam009' && !isAtFinalPosition) {
       gsap.fromTo(cam009TextRef.current,
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
       );
     } else {
       gsap.to(cam009TextRef.current, {
         opacity: 0,
-        y: 50,
-        duration: 0.5,
-        ease: "power3.in"
+        y: 30,
+        duration: 0.2,
+        ease: "power2.in"
       });
     }
   }, [currentCamera, isAtFinalPosition]);
