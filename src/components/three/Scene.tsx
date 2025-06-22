@@ -14,7 +14,7 @@ interface SceneProps {
   onCameraChange: (camera: 'cam006' | 'cam007' | 'cam008' | 'cam009') => void;
   onActionsLoad: (actions: any) => void;
   onFinalPosition?: (isAtFinal: boolean) => void;
-  onEventsTicketsPhase?: (phase: 'none' | 'events' | 'tickets') => void;
+  onEventsTicketsPhase?: (phase: 'none' | 'events' | 'tickets' | 'contact') => void;
 }
 
 // Composant pour gérer le préchargement et le positionnement du livre

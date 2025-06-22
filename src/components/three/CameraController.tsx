@@ -11,7 +11,7 @@ if (typeof window !== "undefined") {
 interface CameraControllerProps {
   onCameraChange: (camera: 'cam006' | 'cam007' | 'cam008' | 'cam009') => void;
   onFinalPosition?: (isAtFinal: boolean) => void;
-  onEventsTicketsPhase?: (phase: 'none' | 'events' | 'tickets') => void;
+  onEventsTicketsPhase?: (phase: 'none' | 'events' | 'tickets' | 'contact') => void;
 }
 
 export const CameraController = ({ onCameraChange, onFinalPosition, onEventsTicketsPhase }: CameraControllerProps) => {
@@ -23,6 +23,7 @@ export const CameraController = ({ onCameraChange, onFinalPosition, onEventsTick
     end: new THREE.Vector3(0.771, 2.523, 8.764),
     final: new THREE.Vector3(0.887, 2.523, 1.414),
     ultimate: new THREE.Vector3(0.887, 2.523, -13.414),
+    down: new THREE.Vector3(0.887, 2.523, -13.414), // Même position qu'ultimate
     sky: new THREE.Vector3(0.887, 2.523, -13.414)
   });
 
@@ -32,6 +33,7 @@ export const CameraController = ({ onCameraChange, onFinalPosition, onEventsTick
     end: new THREE.Euler(0.007, 0.042, 0),
     final: new THREE.Euler(0.007, 0.042, 0),
     ultimate: new THREE.Euler(0.007, 0.042, 0),
+    down: new THREE.Euler(0.007, 0.042, 0), // Même rotation qu'ultimate
     sky: new THREE.Euler(Math.PI/3, 0.042, 0) // Regarder vers le haut
   });
 
@@ -60,10 +62,10 @@ export const CameraController = ({ onCameraChange, onFinalPosition, onEventsTick
               scrollTrigger: {
           trigger: "canvas",
           start: "top top",
-          end: "3500vh",
+          end: "3800vh",
           scrub: 3,
         onUpdate: (self) => {
-          const totalProgress = self.progress * 3500;
+          const totalProgress = self.progress * 3800;
 
           if (totalProgress <= 200) {
             camera.position.copy(targetPosition.start);
@@ -129,8 +131,8 @@ export const CameraController = ({ onCameraChange, onFinalPosition, onEventsTick
             onCameraChange('cam009');
             if (onEventsTicketsPhase) onEventsTicketsPhase('none');
           }
-          else if (totalProgress <= 2800) {
-            const progress = (totalProgress - 2600) / 200;
+          else if (totalProgress <= 2900) {
+            const progress = (totalProgress - 2600) / 300;
             interpolateCamera(
               targetPosition.ultimate,
               targetPosition.sky,
@@ -140,7 +142,7 @@ export const CameraController = ({ onCameraChange, onFinalPosition, onEventsTick
             );
             if (onEventsTicketsPhase) onEventsTicketsPhase('none');
           }
-          else if (totalProgress <= 3150) {
+          else if (totalProgress <= 3200) {
             // Phase Events
             camera.position.copy(targetPosition.sky);
             camera.rotation.copy(targetRotation.sky);
@@ -154,10 +156,29 @@ export const CameraController = ({ onCameraChange, onFinalPosition, onEventsTick
             if (onEventsTicketsPhase) onEventsTicketsPhase('tickets');
             if (onFinalPosition) onFinalPosition(true);
           }
+          else if (totalProgress <= 3650) {
+            const progress = (totalProgress - 3500) / 150;
+            interpolateCamera(
+              targetPosition.sky,
+              targetPosition.down,
+              targetRotation.sky,
+              targetRotation.down,
+              progress
+            );
+            if (onEventsTicketsPhase) onEventsTicketsPhase('tickets');
+            if (onFinalPosition) onFinalPosition(true);
+          }
+          else if (totalProgress <= 3800) {
+            // Phase Contact - caméra reste en position down
+            camera.position.copy(targetPosition.down);
+            camera.rotation.copy(targetRotation.down);
+            if (onEventsTicketsPhase) onEventsTicketsPhase('contact');
+            if (onFinalPosition) onFinalPosition(true);
+          }
           else {
             camera.position.copy(targetPosition.sky);
             camera.rotation.copy(targetRotation.sky);
-            if (onEventsTicketsPhase) onEventsTicketsPhase('tickets');
+            if (onEventsTicketsPhase) onEventsTicketsPhase('contact');
             if (onFinalPosition) onFinalPosition(true);
           }
         }

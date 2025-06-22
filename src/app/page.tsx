@@ -8,6 +8,8 @@ import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { Loader } from "@/components/ui/loader";
 import { Events } from "@/components/ui/Events";
 import { Tickets } from "@/components/ui/Tickets";
+import { Contact } from "@/components/ui/Contact";
+import { Header } from "@/components/ui/Header";
 import { Canvas } from '@react-three/fiber';
 import { animate, useMotionValue } from 'framer-motion';
 import { Suspense } from 'react';
@@ -28,7 +30,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSceneLoaded, setIsSceneLoaded] = useState(false);
   const [isAtFinalPosition, setIsAtFinalPosition] = useState(false);
-  const [currentEventsTicketsPhase, setCurrentEventsTicketsPhase] = useState<'none' | 'events' | 'tickets'>('none');
+  const [currentEventsTicketsPhase, setCurrentEventsTicketsPhase] = useState<'none' | 'events' | 'tickets' | 'contact'>('none');
   const revealProgress = useMotionValue(0);
   const [loaderTexture, setLoaderTexture] = useState<THREE.Texture | null>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -165,8 +167,11 @@ export default function Home() {
         />
       )}
       <div className="relative w-full overflow-x-hidden bg-background text-foreground">
+        {/* Header toujours visible */}
+        <Header />
+        
         {/* Div pour créer la hauteur de scroll */}
-        <div style={{ height: "3500vh" }} />
+        <div style={{ height: "3800vh" }} />
         
         <div ref={titleOverlayRef} className="title-overlay fixed bottom-0 left-0 z-40 p-6 pointer-events-none select-none">
           <div className="relative">
@@ -267,6 +272,13 @@ export default function Home() {
         {currentEventsTicketsPhase === 'tickets' && (
           <div className="fixed inset-0 z-30 pointer-events-auto">
             <Tickets />
+          </div>
+        )}
+
+        {/* Contact Overlay */}
+        {currentEventsTicketsPhase === 'contact' && (
+          <div className="fixed inset-0 z-30 pointer-events-auto">
+            <Contact />
           </div>
         )}
 

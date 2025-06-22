@@ -142,7 +142,7 @@ export const Tickets = () => {
         {/* Carte See More */}
         <div className="w-80 bg-blue-800/40 flex items-center justify-center"
              style={{
-               height: 'calc(24rem + 4rem + 2.5rem)',
+               height: 'calc(24rem + 4rem + 1rem)',
                backdropFilter: 'blur(8px)',
                WebkitBackdropFilter: 'blur(8px)'
              }}>

@@ -1,5 +1,6 @@
 import { ThemeProvider } from "@/components/theme/provider";
 import LenisProvider from "./lenis-provider";
+import { AudioProvider } from "./audio-provider";
 
 export default function RootProviders({ children }: { children: React.ReactNode }) {
   return (
@@ -9,9 +10,11 @@ export default function RootProviders({ children }: { children: React.ReactNode 
       enableSystem
       disableTransitionOnChange
     >
-      <LenisProvider>
-        {children}
-      </LenisProvider>
+      <AudioProvider>
+        <LenisProvider>
+          {children}
+        </LenisProvider>
+      </AudioProvider>
     </ThemeProvider>
   );
 }
