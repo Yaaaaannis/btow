@@ -228,7 +228,7 @@ export const Events = () => {
         style={{
           width: '487px',
           height: '106px',
-          top: '30%',
+          top: '20%',
           left: '1.5%',
           fontStyle: 'normal',
           fontWeight: '800',
@@ -374,15 +374,15 @@ export const Events = () => {
       <div className="flex flex-col justify-start gap-4">
           <button
             onClick={handleNext}
-            className="w-auto bg-white text-black py-4 px-25 font-extrabold font-montserrat hover:bg-gray-100 transition-colors pointer-events-auto text-[24px]  effect-5"
+            className="w-auto bg-white text-black py-4 px-25 font-extrabold font-montserrat hover:bg-gray-100 transition-colors pointer-events-auto text-[24px]"
           >
-            <span>NEXT</span>
+            NEXT
           </button>
           <button
             onClick={handleBack}
-            className="w-auto bg-[#FBD37F] text-black py-4 px-8 font-extrabold font-montserrat hover:bg-yellow-400 transition-colors pointer-events-auto text-[24px]  effect-5-yellow"
+            className="w-auto bg-[#FBD37F] text-black py-4 px-8 font-extrabold font-montserrat hover:bg-yellow-400 transition-colors pointer-events-auto text-[24px]"
           >
-            <span>BACK</span>
+            BACK
           </button>
         </div>
     </div>

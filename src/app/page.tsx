@@ -50,7 +50,7 @@ export default function Home() {
 
       // Scroll animation in parallel with door animation
       gsap.to(window, {
-        scrollTo: window.scrollY + window.innerHeight * 5, // 500vh
+        scrollTo: window.scrollY + window.innerHeight * 0.65, // 500vh
         duration: 3,
         ease: "power2.inOut"
       });
