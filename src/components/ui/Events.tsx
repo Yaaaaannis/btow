@@ -220,11 +220,125 @@ export const Events = () => {
         .effect-5-yellow:hover::after {
           transform: scale(1,1);
         }
+
+        /* MacBook Air Responsive Styles */
+        @media screen and (max-width: 1440px) and (max-height: 900px) {
+          .events-header {
+            width: 350px !important;
+            height: 80px !important;
+            top: 15% !important;
+            left: 2% !important;
+            font-size: 48px !important;
+            line-height: 80% !important;
+          }
+          
+          .events-counter {
+            top: 5% !important;
+            right: 4rem !important;
+          }
+          
+          .events-counter span:first-child {
+            font-size: 96px !important;
+          }
+          
+          .events-counter span:last-child {
+            font-size: 48px !important;
+          }
+          
+          .events-container {
+            left: 1.5rem !important;
+            bottom: 8rem !important;
+            max-width: 85% !important;
+            height: 400px !important;
+            padding: 1rem !important;
+            gap: 1.5rem !important;
+          }
+          
+          .events-image {
+            width: 280px !important;
+            height: 100% !important;
+          }
+          
+          .events-details {
+            width: 50% !important;
+            gap: 1.5rem !important;
+          }
+          
+          .events-title {
+            font-size: 32px !important;
+            line-height: 1.1 !important;
+          }
+          
+          .events-detail-row {
+            height: 24px !important;
+          }
+          
+          .events-detail-text {
+            font-size: 11px !important;
+          }
+          
+          .events-nav-buttons {
+            gap: 1rem !important;
+          }
+          
+          .events-nav-buttons button {
+            padding: 0.75rem 1.5rem !important;
+            font-size: 18px !important;
+          }
+        }
+
+        /* MacBook Air 13" specific (1366x768) */
+        @media screen and (max-width: 1366px) and (max-height: 768px) {
+          .events-header {
+            width: 320px !important;
+            height: 70px !important;
+            font-size: 42px !important;
+          }
+          
+          .events-counter {
+            top: 5% !important;
+          }
+          
+          .events-counter span:first-child {
+            font-size: 80px !important;
+          }
+          
+          .events-counter span:last-child {
+            font-size: 40px !important;
+          }
+          
+          .events-container {
+            bottom: 6rem !important;
+            height: 350px !important;
+            max-width: 90% !important;
+          }
+          
+          .events-image {
+            width: 240px !important;
+          }
+          
+          .events-title {
+            font-size: 28px !important;
+          }
+          
+          .events-detail-row {
+            height: 22px !important;
+          }
+          
+          .events-detail-text {
+            font-size: 10px !important;
+          }
+          
+          .events-nav-buttons button {
+            padding: 0.5rem 1rem !important;
+            font-size: 16px !important;
+          }
+        }
       `}</style>
 
       {/* Header */}
       <div 
-        className="absolute z-10 font-montserrat"
+        className="events-header absolute z-10 font-montserrat"
         style={{
           width: '487px',
           height: '106px',
@@ -247,7 +361,7 @@ export const Events = () => {
       </div>
 
       {/* Event Counter */}
-      <div className="absolute top-[30%] right-8 z-10 ">
+      <div className="events-counter absolute top-[30%] right-8 z-10">
         <div className="text-right">
           <span className="text-white text-[128px] font-bold leading-none font-montserrat">
             {String(currentEventIndex + 1).padStart(2, '0')}
@@ -258,13 +372,11 @@ export const Events = () => {
         </div>
       </div>
 
-
-
       {/* Container for glassmorphism + buttons */}
       <div className="absolute left-8 bottom-16 flex flex-row gap-6">
         {/* Main Content - Glassmorphism Container */}
         <div 
-          className="w-full max-w-[80%] h-120 flex flex-row items-end p-4 gap-6 isolate"
+          className="events-container w-full max-w-[80%] h-120 flex flex-row items-end p-4 gap-6 isolate"
           style={{
             background: 'rgba(255, 255, 255, 0.12)',
             backdropFilter: 'blur(12px)',
@@ -272,7 +384,7 @@ export const Events = () => {
           }}
         >
           {/* Event Image */}
-          <div className="w-96 h-full bg-gray-800 relative overflow-hidden rounded flex-shrink-0">
+          <div className="events-image w-96 h-full bg-gray-800 relative overflow-hidden rounded flex-shrink-0">
             <img
               src={currentEvent.image}
               alt={currentEvent.title}
@@ -281,28 +393,28 @@ export const Events = () => {
           </div>
 
           {/* Event Details */}
-          <div className="w-1/2 h-full flex flex-col items-start gap-6 flex-shrink-0">
+          <div className="events-details w-1/2 h-full flex flex-col items-start gap-6 flex-shrink-0">
             {/* Title */}
-            <h2 className="text-white font-montserrat font-extrabold text-[48px] leading-tight tracking-tight uppercase">
+            <h2 className="events-title text-white font-montserrat font-extrabold text-[48px] leading-tight tracking-tight uppercase">
               {currentEvent.title}
             </h2>
 
             {/* Details Container */}
             <div className="w-full flex flex-col items-start gap-2">
               {/* Location Row */}
-              <div className="w-auto h-8 flex flex-row items-center">
+              <div className="events-detail-row w-auto h-8 flex flex-row items-center">
                 <div className="px-2 py-1 bg-[#FBD37F] flex items-center justify-center shine-effect-yellow">
-                  <span className="font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-blue-600">
+                  <span className="events-detail-text font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-blue-600">
                     LOCATION
                   </span>
                 </div>
                 <div className="flex-1 px-2 py-1 bg-white flex items-center justify-center shine-effect">
-                  <span className="font-montserrat font-extrabold text-[14px] tracking-tight shine-effect uppercase text-black">
+                  <span className="events-detail-text font-montserrat font-extrabold text-[14px] tracking-tight shine-effect uppercase text-black">
                     {currentEvent.location}
                   </span>
                 </div>
                 <button className="px-2 py-1 bg-black/50 flex items-center justify-center gap-2 hover:bg-black/70 transition-colors pointer-events-auto shine-effect-dark">
-                  <span className="font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-white">
+                  <span className="events-detail-text font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-white">
                     VIEW ON MAP
                   </span>
                   <div className="w-4 h-4 text-[#FBD37F]">
@@ -315,19 +427,19 @@ export const Events = () => {
               </div>
 
               {/* Date & Time Row */}
-              <div className="w-auto h-8 flex flex-row items-center">
+              <div className="events-detail-row w-auto h-8 flex flex-row items-center">
                 <div className="px-2 py-1 bg-[#FBD37F] flex items-center justify-center shine-effect-yellow">
-                  <span className="font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-blue-600">
+                  <span className="events-detail-text font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-blue-600">
                     DATE & TIME
                   </span>
                 </div>
                 <div className="flex-1 px-2 py-1 bg-white flex items-center justify-center shine-effect">
-                  <span className="font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-black">
+                  <span className="events-detail-text font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-black">
                     {currentEvent.dateTime}
                   </span>
                 </div>
                 <button className="px-2 py-1 bg-black/50 flex items-center justify-center gap-2 hover:bg-black/70 transition-colors pointer-events-auto shine-effect-dark">
-                  <span className="font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-white">
+                  <span className="events-detail-text font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-white">
                     ADD REMINDER
                   </span>
                   <div className="w-3 h-3 text-yellow-300">
@@ -339,28 +451,28 @@ export const Events = () => {
               </div>
 
               {/* Type Row */}
-              <div className="w-auto h-8 flex flex-row items-center">
+              <div className="events-detail-row w-auto h-8 flex flex-row items-center">
                 <div className="px-2 py-1 bg-[#FBD37F] flex items-center justify-center shine-effect-yellow">
-                  <span className="font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-blue-600">
+                  <span className="events-detail-text font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-blue-600">
                     TYPE
                   </span>
                 </div>
                 <div className="flex-1 px-2 py-1 bg-white flex items-center justify-center shine-effect">
-                  <span className="font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-black">
+                  <span className="events-detail-text font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-black">
                     {currentEvent.type}
                   </span>
                 </div>
               </div>
 
               {/* Snippet Row */}
-              <div className="w-full h-8 flex flex-row items-center">
+              <div className="events-detail-row w-full h-8 flex flex-row items-center">
                 <div className="px-2 py-1 bg-[#FBD37F] flex items-center justify-center shine-effect-yellow">
-                  <span className="font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-blue-600">
+                  <span className="events-detail-text font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-blue-600">
                     SNIPPET
                   </span>
                 </div>
                 <div className="flex-1 px-2 py-1 bg-white flex items-start justify-start shine-effect">
-                  <span className="font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-black">
+                  <span className="events-detail-text font-montserrat font-extrabold text-[14px] tracking-tight uppercase text-black">
                     {currentEvent.snippet}
                   </span>
                 </div>
@@ -371,7 +483,7 @@ export const Events = () => {
         {/* Navigation Buttons - Outside glassmorphism */}
       
       </div>
-      <div className="flex flex-col justify-start gap-4">
+      <div className="events-nav-buttons flex flex-col justify-start gap-4">
           <button
             onClick={handleNext}
             className="w-auto bg-white text-black py-4 px-25 font-extrabold font-montserrat hover:bg-gray-100 transition-colors pointer-events-auto text-[24px]"
