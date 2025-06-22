@@ -6,7 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { Loader } from "@/components/ui/loader";
-import { Footer } from "@/components/ui/footer";
+import { Events } from "@/components/ui/Events";
+import { Tickets } from "@/components/ui/Tickets";
 import { Canvas } from '@react-three/fiber';
 import { animate, useMotionValue } from 'framer-motion';
 import { Suspense } from 'react';
@@ -26,8 +27,8 @@ export default function Home() {
   const [isDoorOpened, setIsDoorOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSceneLoaded, setIsSceneLoaded] = useState(false);
-  const [showFooter, setShowFooter] = useState(false);
   const [isAtFinalPosition, setIsAtFinalPosition] = useState(false);
+  const [currentEventsTicketsPhase, setCurrentEventsTicketsPhase] = useState<'none' | 'events' | 'tickets'>('none');
   const revealProgress = useMotionValue(0);
   const [loaderTexture, setLoaderTexture] = useState<THREE.Texture | null>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -165,7 +166,7 @@ export default function Home() {
       )}
       <div className="relative w-full overflow-x-hidden bg-background text-foreground">
         {/* Div pour créer la hauteur de scroll */}
-        <div style={{ height: "2600vh" }} />
+        <div style={{ height: "3500vh" }} />
         
         <div ref={titleOverlayRef} className="title-overlay fixed bottom-0 left-0 z-40 p-6 pointer-events-none select-none">
           <div className="relative">
@@ -255,6 +256,20 @@ export default function Home() {
           </div>
         )}
 
+        {/* Events Overlay */}
+        {currentEventsTicketsPhase === 'events' && (
+          <div className="fixed inset-0 z-30 pointer-events-auto">
+            <Events />
+          </div>
+        )}
+
+        {/* Tickets Overlay */}
+        {currentEventsTicketsPhase === 'tickets' && (
+          <div className="fixed inset-0 z-30 pointer-events-auto">
+            <Tickets />
+          </div>
+        )}
+
         <div 
           className="fixed top-0 left-0 w-full h-full" 
           ref={sceneRef}
@@ -263,9 +278,9 @@ export default function Home() {
             <Scene 
               onCameraChange={setCurrentCamera}
               onFinalPosition={(isAtFinal) => {
-                setShowFooter(isAtFinal);
                 setIsAtFinalPosition(isAtFinal);
               }}
+              onEventsTicketsPhase={setCurrentEventsTicketsPhase}
               onActionsLoad={(actions) => {
                 if (actions && actions['Main_Door_Open']) {
                   const action = actions['Main_Door_Open'];
@@ -292,7 +307,7 @@ export default function Home() {
           </Suspense>
         </Canvas>
 
-        <Footer isVisible={showFooter} />
+
       </div>
     </>
   );

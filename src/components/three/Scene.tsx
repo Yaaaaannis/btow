@@ -14,6 +14,7 @@ interface SceneProps {
   onCameraChange: (camera: 'cam006' | 'cam007' | 'cam008' | 'cam009') => void;
   onActionsLoad: (actions: any) => void;
   onFinalPosition?: (isAtFinal: boolean) => void;
+  onEventsTicketsPhase?: (phase: 'none' | 'events' | 'tickets') => void;
 }
 
 // Composant pour gérer le préchargement et le positionnement du livre
@@ -53,7 +54,7 @@ const LoadingManager = ({ onActionsLoad }: { onActionsLoad: (actions: any) => vo
   );
 };
 
-export const Scene = memo(({ onCameraChange, onActionsLoad, onFinalPosition }: SceneProps) => {
+export const Scene = memo(({ onCameraChange, onActionsLoad, onFinalPosition, onEventsTicketsPhase }: SceneProps) => {
   return (
     <Canvas
       shadows
@@ -75,7 +76,7 @@ export const Scene = memo(({ onCameraChange, onActionsLoad, onFinalPosition }: S
     >
       <Provider>
         <Suspense fallback={null}>
-          <CameraController onCameraChange={onCameraChange} onFinalPosition={onFinalPosition} />
+          <CameraController onCameraChange={onCameraChange} onFinalPosition={onFinalPosition} onEventsTicketsPhase={onEventsTicketsPhase} />
           <Environment
             files="/textures/modern_meuesum.hdr"
             background

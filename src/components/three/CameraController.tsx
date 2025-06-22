@@ -11,9 +11,10 @@ if (typeof window !== "undefined") {
 interface CameraControllerProps {
   onCameraChange: (camera: 'cam006' | 'cam007' | 'cam008' | 'cam009') => void;
   onFinalPosition?: (isAtFinal: boolean) => void;
+  onEventsTicketsPhase?: (phase: 'none' | 'events' | 'tickets') => void;
 }
 
-export const CameraController = ({ onCameraChange, onFinalPosition }: CameraControllerProps) => {
+export const CameraController = ({ onCameraChange, onFinalPosition, onEventsTicketsPhase }: CameraControllerProps) => {
   const { camera } = useThree();
   
   const [targetPosition] = useState({
@@ -21,7 +22,8 @@ export const CameraController = ({ onCameraChange, onFinalPosition }: CameraCont
     middle: new THREE.Vector3(14.111, 0.474, 9.408),
     end: new THREE.Vector3(0.771, 2.523, 8.764),
     final: new THREE.Vector3(0.887, 2.523, 1.414),
-    ultimate: new THREE.Vector3(0.887, 2.523, -13.414)
+    ultimate: new THREE.Vector3(0.887, 2.523, -13.414),
+    sky: new THREE.Vector3(0.887, 2.523, -13.414)
   });
 
   const [targetRotation] = useState({
@@ -29,7 +31,8 @@ export const CameraController = ({ onCameraChange, onFinalPosition }: CameraCont
     middle: new THREE.Euler(0.55, 1.246, -0.527),
     end: new THREE.Euler(0.007, 0.042, 0),
     final: new THREE.Euler(0.007, 0.042, 0),
-    ultimate: new THREE.Euler(0.007, 0.042, 0)
+    ultimate: new THREE.Euler(0.007, 0.042, 0),
+    sky: new THREE.Euler(Math.PI/3, 0.042, 0) // Regarder vers le haut
   });
 
   // Optimisation : Mémoisation des fonctions d'interpolation
@@ -54,18 +57,19 @@ export const CameraController = ({ onCameraChange, onFinalPosition }: CameraCont
     camera.rotation.copy(targetRotation.start);
 
     const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: "canvas",
-        start: "top top",
-        end: "2600vh",
-        scrub: 3,
+              scrollTrigger: {
+          trigger: "canvas",
+          start: "top top",
+          end: "3500vh",
+          scrub: 3,
         onUpdate: (self) => {
-          const totalProgress = self.progress * 2600;
+          const totalProgress = self.progress * 3500;
 
           if (totalProgress <= 200) {
             camera.position.copy(targetPosition.start);
             camera.rotation.copy(targetRotation.start);
             onCameraChange('cam006');
+            if (onEventsTicketsPhase) onEventsTicketsPhase('none');
           }
           else if (totalProgress <= 700) {
             interpolateCamera(
@@ -75,11 +79,13 @@ export const CameraController = ({ onCameraChange, onFinalPosition }: CameraCont
               targetRotation.middle,
               (totalProgress - 200) / 500
             );
+            if (onEventsTicketsPhase) onEventsTicketsPhase('none');
           }
           else if (totalProgress <= 900) {
             camera.position.copy(targetPosition.middle);
             camera.rotation.copy(targetRotation.middle);
             onCameraChange('cam008');
+            if (onEventsTicketsPhase) onEventsTicketsPhase('none');
           }
           else if (totalProgress <= 1400) {
             interpolateCamera(
@@ -89,11 +95,13 @@ export const CameraController = ({ onCameraChange, onFinalPosition }: CameraCont
               targetRotation.end,
               (totalProgress - 900) / 500
             );
+            if (onEventsTicketsPhase) onEventsTicketsPhase('none');
           }
           else if (totalProgress <= 1600) {
             camera.position.copy(targetPosition.end);
             camera.rotation.copy(targetRotation.end);
             onCameraChange('cam007');
+            if (onEventsTicketsPhase) onEventsTicketsPhase('none');
           }
           else if (totalProgress <= 2100) {
             const progress = (totalProgress - 1600) / 500;
@@ -107,6 +115,7 @@ export const CameraController = ({ onCameraChange, onFinalPosition }: CameraCont
             if (progress > 0.1) {
               onCameraChange('cam009');
             }
+            if (onEventsTicketsPhase) onEventsTicketsPhase('none');
           }
           else if (totalProgress <= 2600) {
             const progress = (totalProgress - 2100) / 500;
@@ -118,21 +127,38 @@ export const CameraController = ({ onCameraChange, onFinalPosition }: CameraCont
               progress
             );
             onCameraChange('cam009');
-            
-            // Déclencher le footer quand on est proche de la fin
-            if (onFinalPosition) {
-              onFinalPosition(progress > 0.7);
-            }
+            if (onEventsTicketsPhase) onEventsTicketsPhase('none');
+          }
+          else if (totalProgress <= 2800) {
+            const progress = (totalProgress - 2600) / 200;
+            interpolateCamera(
+              targetPosition.ultimate,
+              targetPosition.sky,
+              targetRotation.ultimate,
+              targetRotation.sky,
+              progress
+            );
+            if (onEventsTicketsPhase) onEventsTicketsPhase('none');
+          }
+          else if (totalProgress <= 3150) {
+            // Phase Events
+            camera.position.copy(targetPosition.sky);
+            camera.rotation.copy(targetRotation.sky);
+            if (onEventsTicketsPhase) onEventsTicketsPhase('events');
+            if (onFinalPosition) onFinalPosition(true);
+          }
+          else if (totalProgress <= 3500) {
+            // Phase Tickets
+            camera.position.copy(targetPosition.sky);
+            camera.rotation.copy(targetRotation.sky);
+            if (onEventsTicketsPhase) onEventsTicketsPhase('tickets');
+            if (onFinalPosition) onFinalPosition(true);
           }
           else {
-            camera.position.copy(targetPosition.ultimate);
-            camera.rotation.copy(targetRotation.ultimate);
-            onCameraChange('cam009');
-            
-            // Assurer que le footer est visible à la fin
-            if (onFinalPosition) {
-              onFinalPosition(true);
-            }
+            camera.position.copy(targetPosition.sky);
+            camera.rotation.copy(targetRotation.sky);
+            if (onEventsTicketsPhase) onEventsTicketsPhase('tickets');
+            if (onFinalPosition) onFinalPosition(true);
           }
         }
       }

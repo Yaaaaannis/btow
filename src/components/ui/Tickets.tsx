@@ -45,7 +45,7 @@ const tickets: Ticket[] = [
 
 export const Tickets = () => {
   return (
-    <div className="w-full h-full bg-gradient-to-br from-[#024076] to-[#0477DC] relative overflow-hidden">
+    <div className="w-full h-full relative overflow-hidden">
       
 
       {/* Titre principal */}
